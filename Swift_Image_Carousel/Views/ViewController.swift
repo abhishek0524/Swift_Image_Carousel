@@ -27,6 +27,7 @@ class ViewController: UIViewController {
     var arrImg = ["a","b","c","d","e","f","a","b","c","d","e","f","a","b","c","d","e","f"]
     var isfilter:Bool = false
     var arrFilter:[[String]] = []
+    private let headerHeight: CGFloat = 240
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -195,22 +196,21 @@ extension ViewController:UICollectionViewDelegate,UICollectionViewDataSource,UIC
                 let pageIndex = round(scrollView.contentOffset.x / scrollView.frame.width)
                 pageControl.currentPage = Int(pageIndex)
             } else if scrollView == self.scrollView {
-                let screenHeight = UIScreen.main.bounds.height
-                
-//                let tblHeight = CGFloat(arrFilter.count * 50)
-//                if screenHeight > tblHeight {
-//                    var height = screenHeight + (screenHeight - tblHeight)
-//                    tblConstraint.constant = CGFloat(height)
-//                } else {
-//                    var height = screenHeight + (tblHeight - screenHeight)
-//                    tblConstraint.constant = CGFloat(height)
+//                let screenHeight = UIScreen.main.bounds.height
+//                let maxScrollHeight: CGFloat =  screenHeight * 0.15
+//                if scrollView.contentOffset.y < -maxScrollHeight {
+//                    scrollView.contentOffset = CGPoint(x: 0, y: -maxScrollHeight)
 //                }
                 
-                
-                let maxScrollHeight: CGFloat =  screenHeight * 0.15
-                if scrollView.contentOffset.y < -maxScrollHeight {
-                    scrollView.contentOffset = CGPoint(x: 0, y: -maxScrollHeight)
+                let offsetY = scrollView.contentOffset.y
+                if offsetY >= headerHeight {
+                    self.scrollView.isScrollEnabled = false
+                    self.tblListvw.isScrollEnabled = true
+                } else {
+                    self.scrollView.isScrollEnabled = true
+                    self.tblListvw.isScrollEnabled = false
                 }
+                
             }
         }
     
